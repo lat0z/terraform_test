@@ -3,21 +3,34 @@ provider "aws" {
   region = "us-east-2"
 }
 
+#Data source used to remove the hard coded ami id and use the latest one automatically
+data "aws_ami" "amazon" {
+    most_recent = true 
+    owners = ["amazon"]
+    filter {
+        name = "name"
+        values = ["amzn2-ami-hvm-2.0.*-x86_64-gp2"]
+    }
+}
+
+#Variable used to remove the explicit tags in each resource 
+variable "general_tags"{
+    type = map(string)
+    default = {
+        Name  = "Flugel"
+        Owner = "InfraTeam"
+    }
+}
+
 #setting up instance for the test, it is using Amazon linux 
 resource "aws_instance" "first_stage" {
-  ami="ami-0443305dabd4be2bc"
+  ami = data.aws_ami.amazon.id
   instance_type = "t2.micro"
-  tags = {
-    Name  = "Flugel"
-    Owner = "InfraTeam"
-  }
+   tags = var.general_tags
 }
 
 resource "aws_s3_bucket" "first_stage" {
   bucket = "my-first-stage-bucket"
   acl = "private"
-  tags = {
-    Name = "Flugel"
-    Owner = "InfraTeam"
-  }
+  tags = var.general_tags
 }
