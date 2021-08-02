@@ -44,3 +44,12 @@ resource "aws_s3_bucket" "first_stage" {
   acl = "private"
   tags = var.general_tags
 }
+
+#Setup outputs to be able to validate the tags from terratest
+output "instance_tags" {
+  value = aws_instance.first_stage.tags
+}
+
+output "bucket_tags" {
+  value = aws_s3_bucket.first_stage.tags
+}
