@@ -1,0 +1,9 @@
+name: "terratest"
+
+description: "Action used to run terratest inside docker"
+output: 
+    prueba:
+      description: "all done "
+runs:
+  using: "docker"
+  image: "Dockerfile"

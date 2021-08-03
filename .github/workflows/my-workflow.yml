@@ -1,0 +1,15 @@
+name: Docker Action to test terraform deployment
+
+on:
+  push:
+    branches: [ changes ]
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: terratest
+        uses: ./.github/actions/terratest
