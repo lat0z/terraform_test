@@ -5,11 +5,16 @@ on:
     branches: [ changes ]
 
 jobs:
-  action:
+  terratest:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       
-      - name: terratest
+      - name: Setup Docker buildx
+        id: buildx 
+        uses: docker/setup-buildx-action@v1
+
+      - name: test execution of terraform
         uses: ./.github/actions/terratest
